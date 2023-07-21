@@ -8,16 +8,22 @@
             font-family: Arial, sans-serif;
         }
         
-        #clic_button {
-            width: 100px;
-            height: 100px;
-            margin: 50px;
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #3399FF;
+            color: #FFFFFF;
+            font-size: 16px;
+            cursor: pointer;
+            user-select: none;
         }
-        
-        #boost_button {
-            width: 100px;
-            height: 50px;
-            margin-bottom: 20px;
+
+        img {
+            max-width: 80px;
+            max-height: 80px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -27,52 +33,49 @@
         Clics: <span id="clics">0</span><br>
         Argent: $<span id="argent">0</span>
     </p>
-    <button id="clic_button">Cliquez ici !</button><br>
-    <button id="boost_button">Boost (+$5, coût: $10)</button>
+    <a id="clic_a">Clic</a><br>
+    <a id="boost_a"><img src="./Images/boost.png"></img>Boost (+$5, coût: $10)</a>
 
     <script>
         // Variables du jeu
         let clics = 0;
         let argent = 0;
         let argentParClic = 1;
-        let boostActif = false;
         const boostValeur = 5;
-        const boostPrix = 10;
+        let boostPrix = 10;
 
         // Éléments de l'UI
         const clicsElement = document.getElementById('clics');
         const argentElement = document.getElementById('argent');
-        const clicButton = document.getElementById('clic_button');
-        const boostButton = document.getElementById('boost_button');
+        const clica = document.getElementById('clic_a');
+        const boosta = document.getElementById('boost_a');
 
         // Gestion du clic sur le bouton de clic
-        clicButton.addEventListener('click', () => {
+        clica.addEventListener('click', () => {
             clics++;
             argent += argentParClic;
             afficherMiseAJourUI();
         });
 
         // Gestion du clic sur le bouton de boost
-        boostButton.addEventListener('click', () => {
+        boosta.addEventListener('click', () => {
             if (argent >= boostPrix) {
                 argent -= boostPrix;
                 argentParClic += boostValeur;
-                boostActif = true;
+                boostPrix *= 1.2;
                 afficherMiseAJourUI();
             }
         });
 
+        // Mise à jour de l'UI
         function afficherMiseAJourUI() {
             clicsElement.textContent = clics;
-            argentElement.textContent = argent;
-            if (boostActif) {
-                boostButton.disabled = true;
-                boostButton.textContent = 'Boost actif!';
-            } else {
-                boostButton.disabled = false;
-                boostButton.textContent = `Boost (+$${boostValeur}, coût: $${boostPrix})`;
-            }
+            argentElement.textContent = argent.toFixed(2);
+            boosta.textContent = `Boost ${boostPrix.toFixed(2)}$`;
         }
+
+        // Affichage initial de l'UI
+        afficherMiseAJourUI();
     </script>
 </body>
 </html>
